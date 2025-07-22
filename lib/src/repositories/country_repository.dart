@@ -11,8 +11,15 @@ class CountryRepository {
     const String query = r'''
       query {
         countries {
-          code
           name
+          capital
+          code
+          emoji
+          phone
+          continent {
+            name
+            code
+          }
         }
       }
     ''';
@@ -23,8 +30,13 @@ class CountryRepository {
       throw Exception(result.exception.toString());
     }
 
-    final countriesData = result.data!['countries'] as List;
-    print(countriesData);
-    return countriesData.map((data) => Country.fromJson(data)).toList();
+    try {
+      final countriesData = result.data!['countries'] as List;
+      print(countriesData);
+      return countriesData.map((data) => Country.fromJson(data)).toList();
+    } catch (e) {
+      print("error loading countried: $e");
+      throw Exception("Failed to load data");
+    }
   }
 }
