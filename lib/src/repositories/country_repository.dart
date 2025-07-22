@@ -1,6 +1,6 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-import '../models//country.dart';
+import '../models/country.dart';
 
 class CountryRepository {
   final GraphQLClient client;
@@ -19,10 +19,12 @@ class CountryRepository {
 
     final result = await client.query(QueryOptions(document: gql(query)));
     if (result.hasException) {
+      print(result.source.toString());
       throw Exception(result.exception.toString());
     }
 
     final countriesData = result.data!['countries'] as List;
+    print(countriesData);
     return countriesData.map((data) => Country.fromJson(data)).toList();
   }
 }
